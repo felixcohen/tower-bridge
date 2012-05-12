@@ -1,9 +1,10 @@
 Tower Bridge
 ============
 
+This is a fork of Tom Armitage's useful tower bridge bot for arduino purposes.
+
 tower-bridge.rb is a bot that tweets the opening and closing of Tower Bridge. The code is presented for explanatory purposes; not so you can run your own bot, as it were.
 
-Also: how to separate out OAuth configuration variables from a script that sends tweets - ie, so you can
 
 Configuration
 -------------
