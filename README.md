@@ -8,8 +8,6 @@ Also: how to separate out OAuth configuration variables from a script that sends
 Configuration
 -------------
 
-* Fill out your own creds.yml with the Twitter OAuth credentials you've acquired when you created an application on (developer.twitter.com)
 * Put all these files on a server.
 * Set up a cron task to download http://www.towerbridge.org.uk/TBE/EN/BridgeLiftTimes/ , once a day, to schedule.htm
-* Run tower-bridge.rb (or whatever your file is called) once a minute. It will make tweets.
-* That's it.
+* Run as a sinatra app, returns 2 if the bridge should be open(ing), 1 if it should be closing and 0 if there's no change required.

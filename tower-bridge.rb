@@ -5,11 +5,7 @@ require "bundler/setup"
 Bundler.require(:default)
 
 PATH_PREFIX = File.expand_path(File.dirname(__FILE__))
-config = YAML.parse(File.read(PATH_PREFIX + "/creds.yml"))
 
-%w{consumer_key consumer_secret access_token access_token_secret}.each do |key|
-  Object.const_set(key.upcase, config["config"][key].value)
-end
 
 URL = PATH_PREFIX + "/schedule.htm"
 MINUTE = 60
@@ -36,33 +32,16 @@ end
 
 next_event = output.select {|event| event[:time] <= (Time.now + MINUTE) and event[:time] >= Time.now}.first
 
-if next_event
-  output = ""
-  case next_event[:action]
-  when "opening"
-    output = "I am opening for the #{next_event[:vessel]}"
-    if ["maintenance lift", "Maint Lift"].include?(next_event[:vessel].strip.downcase)
-      output << "."
-    else
-      output << ", which is passing #{next_event[:direction_of_vessel]}."
+get "/" do
+  if next_event
+    case next_event[:action]
+    when "opening"
+        "2"
+    when "closing"
+        "1"
     end
-  when "closing"
-    output = "I am closing after the #{next_event[:vessel]}"
-    if ["maintenance lift", "Maint Lift"].include?(next_event[:vessel].strip.downcase)
-      output << "."
-    else
-      output << " has passed #{next_event[:direction_of_vessel]}."
-    end
+  else
+    "0"    
   end
-  # for debug purposes:
-  # puts output
-  
-  Twitter.configure do |config|
-    config.consumer_key = CONSUMER_KEY
-    config.consumer_secret = CONSUMER_SECRET
-    config.oauth_token = ACCESS_TOKEN
-    config.oauth_token_secret = ACCESS_TOKEN_SECRET
-  end
-
-  Twitter.update(output)
 end
+
